@@ -14,9 +14,12 @@ func main() {
 		fmt.Println(utils.Help())
 	}
 
-	version := file.GetVersion("app.properties")
+	oldVersion, b := file.GetVersion("./app.properties")
+	fmt.Println("App Version:", oldVersion)
 
-	fmt.Println("App Version:", version[1])
-	file.IncrementVersion(version[1], ".")
+	newVersion := file.IncrementVersion(oldVersion, ".", "minor")
+	fmt.Println("New Version:", newVersion)
+
+	file.WriteVerionOnFile(oldVersion, newVersion, b)
 
 }
