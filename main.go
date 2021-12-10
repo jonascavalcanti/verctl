@@ -14,7 +14,7 @@ func main() {
 		fmt.Println(utils.Help())
 	}
 
-	oldVersion, b := file.GetVersion("./app.properties")
+	oldVersion, b := file.GetVersion("./../app.properties")
 	fmt.Println("App Version:", oldVersion)
 
 	newVersion := file.IncrementVersion(oldVersion, ".", "minor")
