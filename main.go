@@ -76,5 +76,5 @@ func (opts Options) update() {
 
 func (opts Options) get() {
 	version, _ := file.GetVersion(opts.Filepath)
-	fmt.Println("Application Version:", version)
+	fmt.Println(version)
 }

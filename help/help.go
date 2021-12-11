@@ -25,13 +25,13 @@ func Update() string {
 		"\n" +
 		"Basic Commands:\n" +
 		"\tfilepath,	-f	path of the file where contains application version\n" +
-		"\ttype, 		-t	type of version that will incremented (major, minor, patch) \n"
+		"\tincrement, 	-i	type of version that will incremented (major, minor, patch) \n"
 
 	return updateMsg
 }
 
 func Get() string {
-	getMsg := "xVersioner (CLI): xversioner controls application version\n" +
+	getMsg := "xversioner (CLI): xversioner controls application version\n" +
 		"get command: \n" +
 		"\n" +
 		"Examples:\n" +
@@ -42,7 +42,7 @@ func Get() string {
 		"Find more information at:  \n" +
 		"\n" +
 		"Basic Commands:\n" +
-		"\tfilepath,	-f	path of the file where contains application version\n"
+		"\tfilepath, -f		path of the file where contains application version\n"
 
 	return getMsg
 }
