@@ -70,7 +70,7 @@ func (opts Options) update() {
 	newVersion := file.IncrementVersion(oldVersion, ".", opts.Type)
 	fmt.Println("New Version:", newVersion)
 
-	file.WriteVerionOnFile(oldVersion, newVersion, fileByteArray)
+	file.WriteVerionOnFile(opts.Filepath, oldVersion, newVersion, fileByteArray)
 
 }
 

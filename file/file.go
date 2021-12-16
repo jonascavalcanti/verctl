@@ -47,12 +47,12 @@ func IncrementVersion(oldVersion, separator, typeInc string) string {
 	return newVersion
 }
 
-func WriteVerionOnFile(oldVersion, newVersion string, file []byte) {
+func WriteVerionOnFile(filepath, oldVersion, newVersion string, file []byte) {
 	output := bytes.Replace(file, []byte(oldVersion), []byte(newVersion), -1)
 
 	var err error
 
-	if err = ioutil.WriteFile("./app.properties", output, 0666); err != nil {
+	if err = ioutil.WriteFile(filepath, output, 0666); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
