@@ -64,17 +64,16 @@ func main() {
 
 func (opts Options) update() {
 
-	oldVersion, fileByteArray := file.GetVersion(opts.Filepath)
+	oldVersion := file.GetVersion(opts.Filepath)
 	fmt.Println("Application Version:", oldVersion)
 
 	newVersion := file.IncrementVersion(oldVersion, ".", opts.Type)
 	fmt.Println("New Version:", newVersion)
 
-	file.WriteVerionOnFile(opts.Filepath, oldVersion, newVersion, fileByteArray)
+	file.WriteVerionOnFile(opts.Filepath, oldVersion, newVersion)
 
 }
 
 func (opts Options) get() {
-	version, _ := file.GetVersion(opts.Filepath)
-	fmt.Println(version)
+	fmt.Println(file.GetVersion(opts.Filepath))
 }

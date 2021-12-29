@@ -1,25 +1,49 @@
 package file
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"io/ioutil"
 	"os"
+	re "regexp"
 	"strconv"
 	"strings"
 	"time"
 )
 
-//Read and return the content as string
-func GetVersion(filepath string) (string, []byte) {
-	file, error := ioutil.ReadFile(filepath)
-	if error != nil {
-		panic(error)
+func LinesInFile(fileName string) []string {
+	f, _ := os.Open(fileName)
+	// Create new Scanner.
+	scanner := bufio.NewScanner(f)
+	result := []string{}
+	// Use Scan.
+	for scanner.Scan() {
+		line := scanner.Text()
+		// Append line to result.
+		result = append(result, line)
 	}
-	strVersion := string(file)
-	version := strings.Split(strVersion, "=")
+	return result
+}
 
-	return string(version[1]), file
+//Read and return the content as string
+func GetVersion(filepath string) string {
+	count := 0
+	rgex := re.MustCompile("=|:")
+
+	var version []string
+
+	for _, line := range LinesInFile(filepath) {
+		if count < 1 {
+			if strings.Contains(line, "version") || strings.Contains(line, "VERSION") {
+				//fmt.Printf("Line Number = %v, line = %v\n", index, line)
+				version = rgex.Split(line, -1)
+			}
+			count++
+		}
+
+	}
+	return version[1]
 }
 
 type SemVer struct {
@@ -67,18 +91,14 @@ func generateSemVer(oldVersion, separator, typeInc string) string {
 	return version
 }
 
-/**/
 func generateDateVer(oldVersion, separator string) string {
 	arr := strings.Split(oldVersion, separator)
-
 	fmt.Println(oldVersion)
 
 	layout := "2006.01.02"
-
 	t := time.Now()
 
 	dayInc, _ := (strconv.Atoi(arr[len(arr)-1]))
-
 	dayInc++
 
 	date := t.Format(layout)
@@ -89,8 +109,13 @@ func generateDateVer(oldVersion, separator string) string {
 
 }
 
-/**/
-func WriteVerionOnFile(filepath, oldVersion, newVersion string, file []byte) {
+func WriteVerionOnFile(filepath, oldVersion, newVersion string) {
+
+	file, er := ioutil.ReadFile(filepath)
+	if er != nil {
+		panic(er)
+	}
+
 	output := bytes.Replace(file, []byte(oldVersion), []byte(newVersion), -1)
 
 	var err error
