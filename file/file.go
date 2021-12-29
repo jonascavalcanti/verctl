@@ -34,10 +34,11 @@ func GetVersion(filepath string) string {
 	var version []string
 
 	for _, line := range LinesInFile(filepath) {
-		if count < 1 {
-			if strings.Contains(line, "version") || strings.Contains(line, "VERSION") {
-				//fmt.Printf("Line Number = %v, line = %v\n", index, line)
+		if strings.Contains(line, "version") || strings.Contains(line, "VERSION") {
+			//fmt.Printf("Line Number = %v, line = %v\n", index, line)
+			if count < 1 {
 				version = rgex.Split(line, -1)
+				//fmt.Println(version)
 			}
 			count++
 		}
@@ -93,7 +94,6 @@ func generateSemVer(oldVersion, separator, typeInc string) string {
 
 func generateDateVer(oldVersion, separator string) string {
 	arr := strings.Split(oldVersion, separator)
-	fmt.Println(oldVersion)
 
 	layout := "2006.01.02"
 	t := time.Now()
