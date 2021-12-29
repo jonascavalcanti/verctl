@@ -67,7 +67,7 @@ func (opts Options) update() {
 	oldVersion := file.GetVersion(opts.Filepath)
 	fmt.Println("Application Version:", oldVersion)
 
-	newVersion := file.IncrementVersion(oldVersion, ".", opts.Type)
+	newVersion := file.IncrementVersion(oldVersion, opts.Type)
 	fmt.Println("New Version:", newVersion)
 
 	file.WriteVerionOnFile(opts.Filepath, oldVersion, newVersion)

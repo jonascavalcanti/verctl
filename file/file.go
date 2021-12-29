@@ -31,20 +31,28 @@ func GetVersion(filepath string) string {
 	count := 0
 	rgex := re.MustCompile("=|:")
 
-	var version []string
+	var v []string
+	var version string
 
 	for _, line := range LinesInFile(filepath) {
 		if strings.Contains(line, "version") || strings.Contains(line, "VERSION") {
 			//fmt.Printf("Line Number = %v, line = %v\n", index, line)
 			if count < 1 {
-				version = rgex.Split(line, -1)
+				v = rgex.Split(line, -1)
 				//fmt.Println(version)
+				version = v[1]
 			}
 			count++
 		}
 
 	}
-	return version[1]
+
+	if version == "" {
+		fmt.Println("File have no version tag or file does not exist on", filepath)
+		os.Exit(1)
+	}
+
+	return version
 }
 
 type SemVer struct {
@@ -53,14 +61,14 @@ type SemVer struct {
 	Patch int
 }
 
-func IncrementVersion(oldVersion, separator, typeInc string) string {
+func IncrementVersion(oldVersion, typeInc string) string {
 
 	version := ""
 
 	if typeInc == "major" || typeInc == "minor" || typeInc == "patch" {
-		version = generateSemVer(oldVersion, separator, typeInc)
+		version = generateSemVer(oldVersion, typeInc)
 	} else if typeInc == "date" {
-		version = generateDateVer(oldVersion, separator)
+		version = generateDateVer(oldVersion)
 	} else {
 		fmt.Println("Type", typeInc, "increment unavailable")
 	}
@@ -68,8 +76,8 @@ func IncrementVersion(oldVersion, separator, typeInc string) string {
 	return version
 }
 
-func generateSemVer(oldVersion, separator, typeInc string) string {
-	arr := strings.Split(oldVersion, separator)
+func generateSemVer(oldVersion, typeInc string) string {
+	arr := strings.Split(oldVersion, ".")
 
 	v := new(SemVer)
 
@@ -87,13 +95,13 @@ func generateSemVer(oldVersion, separator, typeInc string) string {
 		fmt.Println("Increment Type", typeInc, "unavailable ")
 	}
 
-	version := strconv.Itoa(v.Major) + "." + strconv.Itoa(v.Minor) + "." + strconv.Itoa(v.Patch)
+	version := "'" + strconv.Itoa(v.Major) + "." + strconv.Itoa(v.Minor) + "." + strconv.Itoa(v.Patch) + "'"
 
 	return version
 }
 
-func generateDateVer(oldVersion, separator string) string {
-	arr := strings.Split(oldVersion, separator)
+func generateDateVer(oldVersion string) string {
+	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
 
 	layout := "2006.01.02"
 	t := time.Now()
@@ -103,7 +111,7 @@ func generateDateVer(oldVersion, separator string) string {
 
 	date := t.Format(layout)
 
-	version := date + "." + strconv.Itoa(dayInc)
+	version := "'" + date + "." + strconv.Itoa(dayInc) + "'"
 
 	return version
 
