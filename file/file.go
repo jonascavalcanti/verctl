@@ -52,7 +52,7 @@ func GetVersion(filepath string) string {
 		os.Exit(1)
 	}
 
-	return version
+	return strings.ReplaceAll(version, "'", "")
 }
 
 type SemVer struct {

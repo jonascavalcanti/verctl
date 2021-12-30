@@ -64,7 +64,8 @@ func main() {
 
 func (opts Options) update() {
 
-	oldVersion := file.GetVersion(opts.Filepath)
+	oldVersionTmp := file.GetVersion(opts.Filepath)
+	oldVersion := "'" + oldVersionTmp + "'"
 	fmt.Println("Application Version:", oldVersion)
 
 	newVersion := file.IncrementVersion(oldVersion, opts.Type)
