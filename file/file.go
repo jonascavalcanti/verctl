@@ -119,8 +119,6 @@ func generateDateVer(oldVersion string) string {
 
 func WriteVerionOnFile(filepath, oldVersion, newVersion string) {
 
-	fmt.Println(strings.ReplaceAll(oldVersion, "'", "") + strings.ReplaceAll(newVersion, "'", ""))
-
 	file, er := ioutil.ReadFile(filepath)
 	if er != nil {
 		panic(er)
