@@ -78,7 +78,7 @@ func IncrementVersion(oldVersion, typeInc string) string {
 
 func generateSemVer(oldVersion, typeInc string) string {
 	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
-	fmt.Println(arr)
+
 	v := new(SemVer)
 
 	v.Major, _ = strconv.Atoi(arr[0])
@@ -118,6 +118,8 @@ func generateDateVer(oldVersion string) string {
 }
 
 func WriteVerionOnFile(filepath, oldVersion, newVersion string) {
+
+	fmt.Println(oldVersion + newVersion)
 
 	file, er := ioutil.ReadFile(filepath)
 	if er != nil {
