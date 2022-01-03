@@ -77,8 +77,8 @@ func IncrementVersion(oldVersion, typeInc string) string {
 }
 
 func generateSemVer(oldVersion, typeInc string) string {
-	arr := strings.Split(oldVersion, ".")
-
+	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
+	fmt.Println(arr)
 	v := new(SemVer)
 
 	v.Major, _ = strconv.Atoi(arr[0])
