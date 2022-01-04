@@ -54,6 +54,8 @@ func IncrementVersion(oldVersion, typeInc string) string {
 		version = generateDateVer(oldVersion)
 	} else if typeInc == "rc" {
 		version = generateRCVer(oldVersion)
+	} else if typeInc == "staging" {
+		version = generateStagingVer(oldVersion)
 	} else {
 		fmt.Println("Type", typeInc, "increment unavailable")
 	}
@@ -107,7 +109,9 @@ func generateRCVer(oldVersion string) string {
 	var sb strings.Builder
 	var rcInc int
 
-	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
+	oldVersionRemovedStaging := strings.ReplaceAll(oldVersion, "-staging", "")
+
+	arr := strings.Split(strings.ReplaceAll(oldVersionRemovedStaging, "'", ""), ".")
 
 	if !strings.Contains(oldVersion, "-rc") {
 		arr = append(arr, "-rc")
@@ -132,6 +136,22 @@ func generateRCVer(oldVersion string) string {
 	sb.WriteString(strconv.Itoa(rcInc) + "'")
 
 	version := sb.String()
+
+	return version
+}
+
+func generateStagingVer(oldVersion string) string {
+	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
+
+	v := new(SemVer)
+
+	v.Major, _ = strconv.Atoi(arr[0])
+	v.Minor, _ = strconv.Atoi(arr[1])
+	v.Patch, _ = strconv.Atoi(arr[2])
+
+	v.Minor++
+
+	version := "'" + strconv.Itoa(v.Major) + "." + strconv.Itoa(v.Minor) + "." + strconv.Itoa(v.Patch) + "-staging" + "'"
 
 	return version
 }
