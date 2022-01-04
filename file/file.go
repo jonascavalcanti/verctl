@@ -69,6 +69,8 @@ func IncrementVersion(oldVersion, typeInc string) string {
 		version = generateSemVer(oldVersion, typeInc)
 	} else if typeInc == "date" {
 		version = generateDateVer(oldVersion)
+	} else if typeInc == "rc" {
+		version = generateRCVer(oldVersion)
 	} else {
 		fmt.Println("Type", typeInc, "increment unavailable")
 	}
@@ -115,6 +117,27 @@ func generateDateVer(oldVersion string) string {
 
 	return version
 
+}
+
+func generateRCVer(oldVersion string) string {
+	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
+
+	rcInc, _ := strconv.Atoi(arr[len(arr)-1])
+	rcInc++
+
+	var sb strings.Builder
+
+	sb.WriteString("'")
+	for i, num := range arr {
+		if i < (len(arr) - 1) {
+			sb.WriteString(num + ".")
+		}
+	}
+	sb.WriteString(strconv.Itoa(rcInc) + "'")
+
+	version := sb.String()
+
+	return version
 }
 
 func WriteVerionOnFile(filepath, oldVersion, newVersion string) {
