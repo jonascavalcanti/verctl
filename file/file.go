@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 func LinesInFile(fileName string) []string {
@@ -23,7 +24,6 @@ func LinesInFile(fileName string) []string {
 }
 
 func ReplaceOnFile(filepath, oldVersion, newVersion string) {
-
 
 	file, er := ioutil.ReadFile(filepath)
 	if er != nil {
