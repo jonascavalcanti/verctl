@@ -24,12 +24,13 @@ func LinesInFile(fileName string) []string {
 
 func ReplaceOnFile(filepath, oldVersion, newVersion string) {
 
+
 	file, er := ioutil.ReadFile(filepath)
 	if er != nil {
 		panic(er)
 	}
 
-	output := bytes.Replace(file, []byte(oldVersion), []byte(newVersion), -1)
+	output := bytes.Replace(file, []byte(strings.ReplaceAll(oldVersion, "'", "")), []byte(strings.ReplaceAll(newVersion, "'", "")), -1)
 
 	var err error
 
