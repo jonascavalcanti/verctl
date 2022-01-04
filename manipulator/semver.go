@@ -1,30 +1,13 @@
-package file
+package manipulator
 
 import (
-	"bufio"
-	"bytes"
 	"fmt"
-	"io/ioutil"
 	"os"
 	re "regexp"
 	"strconv"
 	"strings"
 	"time"
 )
-
-func LinesInFile(fileName string) []string {
-	f, _ := os.Open(fileName)
-	// Create new Scanner.
-	scanner := bufio.NewScanner(f)
-	result := []string{}
-	// Use Scan.
-	for scanner.Scan() {
-		line := scanner.Text()
-		// Append line to result.
-		result = append(result, line)
-	}
-	return result
-}
 
 //Read and return the content as string
 func GetVersion(filepath string) string {
@@ -34,7 +17,7 @@ func GetVersion(filepath string) string {
 	var v []string
 	var version string
 
-	for _, line := range LinesInFile(filepath) {
+	for _, line := range ReadLinesInFile(filepath) {
 		if strings.Contains(line, "version") || strings.Contains(line, "VERSION") {
 			//fmt.Printf("Line Number = %v, line = %v\n", index, line)
 			if count < 1 {
@@ -140,19 +123,7 @@ func generateRCVer(oldVersion string) string {
 	return version
 }
 
-func WriteVerionOnFile(filepath, oldVersion, newVersion string) {
+func WriteVersionOnFile(filepath, oldVersion, newVersion string) {
 
-	file, er := ioutil.ReadFile(filepath)
-	if er != nil {
-		panic(er)
-	}
-
-	output := bytes.Replace(file, []byte(strings.ReplaceAll(oldVersion, "'", "")), []byte(strings.ReplaceAll(newVersion, "'", "")), -1)
-
-	var err error
-
-	if err = ioutil.WriteFile(filepath, output, 0666); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+	ReplaceInFile(filepath, oldVersion, newVersion)
 }
