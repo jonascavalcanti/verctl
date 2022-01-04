@@ -1,4 +1,4 @@
-package semver
+package manipulator
 
 import (
 	"fmt"
@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"xversioner/file"
 )
 
 //Read and return the content as string
@@ -18,7 +17,7 @@ func GetVersion(filepath string) string {
 	var v []string
 	var version string
 
-	for _, line := range file.LinesInFile(filepath) {
+	for _, line := range ReadLinesInFile(filepath) {
 		if strings.Contains(line, "version") || strings.Contains(line, "VERSION") {
 			//fmt.Printf("Line Number = %v, line = %v\n", index, line)
 			if count < 1 {
@@ -126,5 +125,5 @@ func generateRCVer(oldVersion string) string {
 
 func WriteVersionOnFile(filepath, oldVersion, newVersion string) {
 
-	file.ReplaceOnFile(filepath, oldVersion, newVersion)
+	ReplaceInFile(filepath, oldVersion, newVersion)
 }

@@ -1,4 +1,4 @@
-package file
+package manipulator
 
 import (
 	"bufio"
@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func LinesInFile(fileName string) []string {
+func ReadLinesInFile(fileName string) []string {
 	f, _ := os.Open(fileName)
 	// Create new Scanner.
 	scanner := bufio.NewScanner(f)
@@ -23,7 +23,7 @@ func LinesInFile(fileName string) []string {
 	return result
 }
 
-func ReplaceOnFile(filepath, oldVersion, newVersion string) {
+func ReplaceInFile(filepath, oldVersion, newVersion string) {
 
 	file, er := ioutil.ReadFile(filepath)
 	if er != nil {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"xversioner/help"
-	"xversioner/semver"
+	"xversioner/manipulator"
 )
 
 type Options struct {
@@ -64,17 +64,17 @@ func main() {
 
 func (opts Options) update() {
 
-	oldVersionTmp := semver.GetVersion(opts.Filepath)
+	oldVersionTmp := manipulator.GetVersion(opts.Filepath)
 	oldVersion := "'" + oldVersionTmp + "'"
 	fmt.Println("Application Version:", oldVersion)
 
-	newVersion := semver.IncrementVersion(oldVersion, opts.Type)
+	newVersion := manipulator.IncrementVersion(oldVersion, opts.Type)
 	fmt.Println("New Version:", newVersion)
 
-	semver.WriteVersionOnFile(opts.Filepath, oldVersion, newVersion)
+	manipulator.WriteVersionOnFile(opts.Filepath, oldVersion, newVersion)
 
 }
 
 func (opts Options) get() {
-	fmt.Println(semver.GetVersion(opts.Filepath))
+	fmt.Println(manipulator.GetVersion(opts.Filepath))
 }
