@@ -103,19 +103,39 @@ func generateDateVer(oldVersion string) string {
 }
 
 func generateRCVer(oldVersion string) string {
-	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
-
-	rcInc, _ := strconv.Atoi(arr[len(arr)-1])
-	rcInc++
 
 	var sb strings.Builder
 
+	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
+
+	var rcInc int
+
+	fmt.Println(arr)
+
+	if !strings.Contains(oldVersion, "-rc") {
+		fmt.Println("false")
+		arr = append(arr, "-rc")
+		rcInc = 0
+	} else {
+		fmt.Println(strings.Contains(oldVersion, "-rc"))
+		rcInc, _ = strconv.Atoi(arr[len(arr)-1])
+		rcInc++
+		fmt.Println(rcInc)
+	}
+
 	sb.WriteString("'")
-	for i, num := range arr {
+
+	for i, value := range arr {
 		if i < (len(arr) - 1) {
-			sb.WriteString(num + ".")
+			fmt.Println(i)
+			if arr[i+1] == "-rc" {
+				sb.WriteString(value + "-rc.")
+			} else {
+				sb.WriteString(value + ".")
+			}
 		}
 	}
+
 	sb.WriteString(strconv.Itoa(rcInc) + "'")
 
 	version := sb.String()
