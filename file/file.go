@@ -24,6 +24,7 @@ func LinesInFile(fileName string) []string {
 
 func ReplaceOnFile(filepath, oldVersion, newVersion string) {
 
+
 	file, er := ioutil.ReadFile(filepath)
 	if er != nil {
 		panic(er)
