@@ -50,9 +50,11 @@ func IncrementVersion(oldVersion, typeInc string) string {
 	version := ""
 
 	if typeInc == "major" || typeInc == "minor" || typeInc == "patch" {
-		version = GenerateSemVer(oldVersion, typeInc)
+		version = generateSemVer(oldVersion, typeInc)
 	} else if typeInc == "date" {
-		version = GenerateDateVer(oldVersion)
+		version = generateDateVer(oldVersion)
+	} else if typeInc == "rc" {
+		version = generateRCVer(oldVersion)
 	} else {
 		fmt.Println("Type", typeInc, "increment unavailable")
 	}
@@ -60,8 +62,8 @@ func IncrementVersion(oldVersion, typeInc string) string {
 	return version
 }
 
-func GenerateSemVer(oldVersion, typeInc string) string {
-	arr := strings.Split(oldVersion, ".")
+func generateSemVer(oldVersion, typeInc string) string {
+	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
 
 	v := new(SemVer)
 
@@ -84,7 +86,7 @@ func GenerateSemVer(oldVersion, typeInc string) string {
 	return version
 }
 
-func GenerateDateVer(oldVersion string) string {
+func generateDateVer(oldVersion string) string {
 	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
 
 	layout := "2006.01.02"
@@ -99,6 +101,27 @@ func GenerateDateVer(oldVersion string) string {
 
 	return version
 
+}
+
+func generateRCVer(oldVersion string) string {
+	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
+
+	rcInc, _ := strconv.Atoi(arr[len(arr)-1])
+	rcInc++
+
+	var sb strings.Builder
+
+	sb.WriteString("'")
+	for i, num := range arr {
+		if i < (len(arr) - 1) {
+			sb.WriteString(num + ".")
+		}
+	}
+	sb.WriteString(strconv.Itoa(rcInc) + "'")
+
+	version := sb.String()
+
+	return version
 }
 
 func WriteVersionOnFile(filepath, oldVersion, newVersion string) {

@@ -29,7 +29,7 @@ func ReplaceOnFile(filepath, oldVersion, newVersion string) {
 		panic(er)
 	}
 
-	output := bytes.Replace(file, []byte(oldVersion), []byte(newVersion), -1)
+	output := bytes.Replace(file, []byte(strings.ReplaceAll(oldVersion, "'", "")), []byte(strings.ReplaceAll(newVersion, "'", "")), -1)
 
 	var err error
 
