@@ -52,8 +52,14 @@ func IncrementVersion(oldVersion, typeInc string) string {
 		version = generateSemVer(oldVersion, typeInc)
 	} else if typeInc == "date" {
 		version = generateDateVer(oldVersion)
-	} else if typeInc == "rc" {
-		version = generateRCVer(oldVersion)
+	} else if typeInc == "rc" || strings.Contains(typeInc, ":") {
+		if strings.Contains(typeInc, "major") || strings.Contains(typeInc, "minor") || strings.Contains(typeInc, "patch") {
+			semver := strings.Split(typeInc, ":")
+			version = generateRCVer(oldVersion, semver[1])
+		} else {
+			version = generateRCVer(oldVersion, "")
+		}
+
 	} else if typeInc == "staging" {
 		version = generateStagingVer(oldVersion)
 	} else {
@@ -65,6 +71,9 @@ func IncrementVersion(oldVersion, typeInc string) string {
 
 func generateSemVer(oldVersion, typeInc string) string {
 	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
+
+	arr[2] = strings.ReplaceAll(arr[2], "-rc", "")
+	arr[2] = strings.ReplaceAll(arr[2], "-staging", "")
 
 	v := new(SemVer)
 
@@ -104,7 +113,7 @@ func generateDateVer(oldVersion string) string {
 
 }
 
-func generateRCVer(oldVersion string) string {
+func generateRCVer(oldVersion, semver string) string {
 
 	var sb strings.Builder
 	var rcInc int
@@ -116,9 +125,30 @@ func generateRCVer(oldVersion string) string {
 	if !strings.Contains(oldVersion, "-rc") {
 		arr = append(arr, "-rc")
 		rcInc = 0
-	} else {
+	}
+
+	if semver == "" {
 		rcInc, _ = strconv.Atoi(arr[len(arr)-1])
 		rcInc++
+	} else if semver == "major" {
+		major, _ := strconv.Atoi(arr[0])
+		major++
+		arr[0] = strconv.Itoa(major)
+	} else if semver == "minor" {
+		minor, _ := strconv.Atoi(arr[1])
+		minor++
+		arr[1] = strconv.Itoa(minor)
+	} else if semver == "patch" {
+		var patchNum int
+		if strings.Contains(arr[2], "-rc") {
+			patchArr := strings.Split(arr[2], "-")
+			patchNum, _ = strconv.Atoi(patchArr[0])
+
+		} else {
+			patchNum, _ = strconv.Atoi(arr[2])
+		}
+		patchNum++
+		arr[2] = strconv.Itoa(patchNum) + "-rc"
 	}
 
 	sb.WriteString("'")
@@ -145,11 +175,12 @@ func generateStagingVer(oldVersion string) string {
 
 	v := new(SemVer)
 
+	arr[2] = strings.ReplaceAll(arr[2], "-rc", "")
+	arr[2] = strings.ReplaceAll(arr[2], "-staging", "")
+
 	v.Major, _ = strconv.Atoi(arr[0])
 	v.Minor, _ = strconv.Atoi(arr[1])
 	v.Patch, _ = strconv.Atoi(arr[2])
-
-	v.Minor++
 
 	version := "'" + strconv.Itoa(v.Major) + "." + strconv.Itoa(v.Minor) + "." + strconv.Itoa(v.Patch) + "-staging" + "'"
 
