@@ -15,27 +15,31 @@ func GetVersion(filepath string) string {
 	rgex := re.MustCompile("=|:")
 
 	var v []string
-	var version string
+	var num_version string
 
 	for _, line := range ReadLinesInFile(filepath) {
 		if strings.Contains(line, "version") || strings.Contains(line, "VERSION") {
 			//fmt.Printf("Line Number = %v, line = %v\n", index, line)
+			//fmt.Printf("line = %v\n", line)
+
 			if count < 1 {
 				v = rgex.Split(line, -1)
-				//fmt.Println(version)
-				version = v[1]
+				//fmt.Println(v)
+				num_version = v[1]
+				num_version = strings.ReplaceAll(num_version, "\"", "")
+				num_version = strings.ReplaceAll(num_version, "'", "")
 			}
 			count++
 		}
 
 	}
 
-	if version == "" {
-		fmt.Println("File have no version tag or file does not exist on", filepath)
+	if num_version == "" {
+		fmt.Println("File have no version tag or file does not exist", filepath)
 		os.Exit(1)
 	}
 
-	return strings.ReplaceAll(version, "'", "")
+	return num_version
 }
 
 type SemVer struct {
@@ -48,14 +52,14 @@ func IncrementVersion(oldVersion, typeInc string) string {
 
 	version := ""
 
-	if typeInc == "major" || typeInc == "minor" || typeInc == "patch" {
+	if typeInc == "semver" || typeInc == "major" || typeInc == "minor" || typeInc == "patch" {
 		version = generateSemVer(oldVersion, typeInc)
 	} else if typeInc == "date" {
 		version = generateDateVer(oldVersion)
 	} else if typeInc == "rc" || strings.Contains(typeInc, ":") {
 		if strings.Contains(typeInc, "major") || strings.Contains(typeInc, "minor") || strings.Contains(typeInc, "patch") {
-			semver := strings.Split(typeInc, ":")
-			version = generateRCVer(oldVersion, semver[1])
+			rc := strings.Split(typeInc, ":")
+			version = generateRCVer(oldVersion, rc[1])
 		} else {
 			version = generateRCVer(oldVersion, "")
 		}
@@ -64,6 +68,7 @@ func IncrementVersion(oldVersion, typeInc string) string {
 		version = generateStagingVer(oldVersion)
 	} else {
 		fmt.Println("Type", typeInc, "increment unavailable")
+		os.Exit(1)
 	}
 
 	return version
