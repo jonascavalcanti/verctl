@@ -45,7 +45,6 @@ jobs:
         TAG=$(./xversioner_linux_amd64 get filepath ./app.properties)
         echo "TAG=$TAG" >> $GITHUB_ENV
 
-        git config --local user.email "itops@unico.io"
         git config --local user.name "github-actions[bot]"
 
         git tag $TAG -a -m "$CMT_MSG"
