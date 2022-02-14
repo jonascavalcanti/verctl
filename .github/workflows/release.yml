@@ -1,0 +1,62 @@
+name: release
+
+on:
+  pull_request:
+    types: [ closed ]
+
+jobs:
+  go-release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v2
+    -
+      name: Build linux binaries
+      run: |
+        env GOOS=linux GOARCH=amd64 go build -o xversioner_linux_amd64
+    -
+      name: Build Windows binaries
+      run: |
+        env GOOS=windows GOARCH=amd64 go build -o xversioner_windows_amd64
+    -
+      name: Build macOS_amd64 binaries
+      run: |
+        env GOOS=darwin GOARCH=amd64 go build -o xversioner_macOS_amd64
+    -
+      name: Application version update
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        SEMVER="patch"
+        BRANCH_NAME=$(echo ${{ steps.extract_branch.outputs.branch_name }} \
+          | sed 's/\//-/g' \
+          | awk -F'-' '{print $1}')
+
+        if [ $BRANCH_NAME == "feat"  ]; then SEMVER="minor"; fi
+
+        CMT_MSG=$(echo ${{ steps.extract_commit_msg.outputs.cmt_msg }} \
+          | grep -i 'BREAKING CHANGE') || CMT_MSG=""
+
+        [ ! -z "$CMT_MSG" ] && SEMVER="major"
+
+        ./xversioner_linux_amd64 update -f ./app.properties -i $SEMVER
+        TAG=$(./xversioner_linux_amd64 get filepath ./app.properties)
+        echo "TAG=$TAG" >> $GITHUB_ENV
+
+        git config --local user.email "itops@unico.io"
+        git config --local user.name "github-actions[bot]"
+
+        git tag $TAG -a -m "$CMT_MSG"
+        git push origin --tags -f
+    -
+      name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ env.TAG }}
+        files: |
+          xversioner_linux_amd64
+          xversioner_windows_amd64
+          xversioner_macOS_amd64
+
