@@ -50,16 +50,16 @@ jobs:
 
         git add app.properties
         git commit -m "Update app version to $TAG" -a
-        git push -f origin main
+       # git push -f origin main
 
         # git tag $TAG -a -m "$CMT_MSG"
         # git push origin --tags -f
 
-    # - name: Push changes
-    #   uses: ad-m/github-push-action@master
-    #   with:
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    #     branch: ${{ github.ref }}
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
 
     # - name: Release
     #   uses: softprops/action-gh-release@v1
