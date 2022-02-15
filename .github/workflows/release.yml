@@ -45,7 +45,6 @@ jobs:
         TAG=$(./xversioner_linux_amd64 get filepath ./app.properties)
 
         echo "TAG=$TAG" >> $GITHUB_ENV
-        echo "VERSION=\"$TAG\"" > app.properties
 
         git config --local user.name "github-actions[bot]"
 
