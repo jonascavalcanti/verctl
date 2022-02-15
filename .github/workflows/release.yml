@@ -43,9 +43,14 @@ jobs:
 
         ./xversioner_linux_amd64 update -f ./app.properties -i $SEMVER
         TAG=$(./xversioner_linux_amd64 get filepath ./app.properties)
+
         echo "TAG=$TAG" >> $GITHUB_ENV
 
         git config --local user.name "github-actions[bot]"
+
+        git add app.properties
+        git commit -m "Update app version to $TAG" -a
+        git push origin main
 
         git tag $TAG -a -m "$CMT_MSG"
         git push origin --tags -f
