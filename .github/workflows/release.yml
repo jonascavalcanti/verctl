@@ -50,15 +50,40 @@ jobs:
 
         git add app.properties
         git commit -m "Update app version to $TAG" -a
-        git push origin main
+       # git push origin main
 
-        git tag $TAG -a -m "$CMT_MSG"
-        git push origin --tags -f
-    -
-      name: Release
-      uses: softprops/action-gh-release@v1
+        # git tag $TAG -a -m "$CMT_MSG"
+        # git push origin --tags -f
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
       with:
-        tag_name: ${{ env.TAG }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+
+    # - name: Release
+    #   uses: softprops/action-gh-release@v1
+    #   with:
+    #     tag_name: ${{ env.TAG }}
+    #     files: |
+    #       xversioner_linux_amd64
+    #       xversioner_windows_amd64
+    #       xversioner_macOS_amd64
+
+    - name: Create Tag Release on Repository
+      id: create_tag_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: v${{ steps.vars.outputs.sha_short }}
+        release_name: Release v${{ steps.vars.outputs.sha_short }}
+        body: |
+          Changes in this Release
+          - Generate Tag with version ${{ steps.vars.outputs.sha_short }}
+          - ${{ github.event.head_commit.message }}
+        draft: false
+        prerelease: false
         files: |
           xversioner_linux_amd64
           xversioner_windows_amd64
