@@ -102,17 +102,27 @@ func generateSemVer(oldVersion, typeInc string) string {
 }
 
 func generateDateVer(oldVersion string) string {
+
 	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
 
 	layout := "2006.01.02"
 	t := time.Now()
 
+	dateNow := t.Format(layout)
+
+	dateParsedNow, _ := time.Parse(layout, dateNow)
+
+	fileDateStr := arr[0] + "." + arr[1] + "." + arr[2]
+	fileParsedDate, _ := time.Parse(layout, fileDateStr)
+
 	dayInc, _ := (strconv.Atoi(arr[len(arr)-1]))
 	dayInc++
 
-	date := t.Format(layout)
+	if dateParsedNow.After(fileParsedDate) {
+		dayInc = 0
+	}
 
-	version := "'" + date + "." + strconv.Itoa(dayInc) + "'"
+	version := "'" + dateNow + "." + strconv.Itoa(dayInc) + "'"
 
 	return version
 
