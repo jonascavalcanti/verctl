@@ -88,8 +88,11 @@ func generateSemVer(oldVersion, typeInc string) string {
 
 	if typeInc == "major" {
 		v.Major++
+		v.Minor = 0
+		v.Patch = 0
 	} else if typeInc == "minor" {
 		v.Minor++
+		v.Patch = 0
 	} else if typeInc == "patch" {
 		v.Patch++
 	} else {
