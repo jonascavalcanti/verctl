@@ -98,8 +98,6 @@ func (opts Options) update() {
 		fmt.Println("Application Version:", oldVersion)
 		fmt.Println("New Version:", newVersion)
 	} else if opts.Version != "" {
-		//os.Setenv("newVersionApp", newVersion)
-		//fmt.Println("newVersionApp:", os.Getenv("newVersionApp"))
 		fmt.Println(newVersion)
 	}
 
