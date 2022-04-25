@@ -80,9 +80,9 @@ func (opts Options) update() {
 		oldVersionTmp = opts.Version
 		if oldVersionTmp != "" {
 			if strings.Contains(oldVersionTmp, "v") {
-				oldVersionTmp = strings.ReplaceAll(opts.Version, "v", "")
-			} else {
-				oldVersionTmp = opts.Version
+				oldVersionTmp = strings.ReplaceAll(oldVersionTmp, "v", "")
+			} else if strings.Contains(oldVersionTmp, "V") {
+				oldVersionTmp = strings.ReplaceAll(oldVersionTmp, "V", "")
 			}
 		}
 	} else {
