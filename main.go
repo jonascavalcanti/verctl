@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"xversioner/help"
 	"xversioner/manipulator"
 )
@@ -10,6 +11,7 @@ import (
 type Options struct {
 	Type     string
 	Filepath string
+	Version  string
 }
 
 func main() {
@@ -23,6 +25,13 @@ func main() {
 	for index, opt := range os.Args {
 
 		switch opt {
+		case "version", "--version":
+			if len(os.Args[index:]) <= 1 {
+				fmt.Println("You need to set the file path of application that contain the application version")
+				os.Exit(1)
+			} else {
+				options.Version = os.Args[index+1]
+			}
 		case "filepath", "-f":
 			if len(os.Args[index:]) <= 1 {
 				fmt.Println("You need to set the file path of application that contain the application version")
@@ -64,14 +73,33 @@ func main() {
 
 func (opts Options) update() {
 
-	oldVersionTmp := manipulator.GetVersion(opts.Filepath)
+	oldVersionTmp := ""
+	if opts.Filepath != "" {
+		oldVersionTmp = manipulator.GetVersion(opts.Filepath)
+	} else if opts.Version != "" {
+		oldVersionTmp = opts.Version
+		if oldVersionTmp != "" {
+			if strings.Contains(oldVersionTmp, "v") {
+				oldVersionTmp = strings.ReplaceAll(oldVersionTmp, "v", "")
+			} else if strings.Contains(oldVersionTmp, "V") {
+				oldVersionTmp = strings.ReplaceAll(oldVersionTmp, "V", "")
+			}
+		}
+	} else {
+		fmt.Println(help.Default())
+		os.Exit(1)
+	}
+
 	oldVersion := "'" + oldVersionTmp + "'"
-	fmt.Println("Application Version:", oldVersion)
-
 	newVersion := manipulator.IncrementVersion(oldVersion, opts.Type)
-	fmt.Println("New Version:", newVersion)
 
-	manipulator.WriteVersionOnFile(opts.Filepath, oldVersion, newVersion)
+	if opts.Filepath != "" {
+		manipulator.WriteVersionOnFile(opts.Filepath, oldVersion, newVersion)
+		fmt.Println("Application Version:", oldVersion)
+		fmt.Println("New Version:", newVersion)
+	} else if opts.Version != "" {
+		fmt.Println(newVersion)
+	}
 
 }
 
