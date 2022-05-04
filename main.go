@@ -98,7 +98,7 @@ func (opts Options) update() {
 		fmt.Println("Application Version:", oldVersion)
 		fmt.Println("New Version:", newVersion)
 	} else if opts.Version != "" {
-		fmt.Println(newVersion)
+		fmt.Println(strings.ReplaceAll(newVersion, "'", ""))
 	}
 
 }
