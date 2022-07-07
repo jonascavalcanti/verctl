@@ -1,8 +1,8 @@
-# Dexter Version Tool (CLI)
+# xversioner Version Tool (CLI)
 
-<img src="./docs/imgs/dexter-icon.png" width="300" height="300" >
+<img src="./docs/imgs/xversioner-icon.png" width="300" height="300" >
 
-Dexter Manages version control of applications based on the [Semantic Versioning Specification](https://semver.org/) and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+xversioner Manages version control of applications based on the [Semantic Versioning Specification](https://semver.org/) and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
 Table of Contents
 =================
@@ -25,11 +25,11 @@ $ go mod tidy
 ````
 ### Normal Build
 ````
-$ go build -v -o dexter
+$ go build -v -o xversioner
 ````
 ### Linux Build
 ````
-$ env GOOS=linux GOARCH=amd64 go build -v -o dexter
+$ env GOOS=linux GOARCH=amd64 go build -v -o xversioner
 ````
 
 ## Increment Types
