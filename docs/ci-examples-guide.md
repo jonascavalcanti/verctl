@@ -76,14 +76,14 @@ extract-gha-vars:
 
 ````
 
-### xversioner checkout step (Use a token that has permission to access the repository)
+### dexter checkout step (Use a token that has permission to access the repository)
 ````
  - name: Checkout
       uses: actions/checkout@v2
       with:
-        #token: ${{ <some token if necessary> }}
-        repository: 'jonascavalcantineto/xversioner'
-        path: 'xversioner'
+        token: ${{ secrets.SA_SRE_READONLY}}
+        repository: 'acesso-io/dexter'
+        path: 'dexter'
 ````
 
 ### Increment step (This step uses commit conventions and semantic version specification)
@@ -91,7 +91,7 @@ extract-gha-vars:
 - name: Increment application version
       id: increment
       env:
-        XVERSIONER_BIN: "./xversioner/xversioner-linux-amd64"
+        dexter_bin: "./dexter/dexter-linux-amd64"
       shell: bash
       run: |
         set -x
@@ -103,8 +103,8 @@ extract-gha-vars:
         
         github_tag_version=`echo ${{ needs.extract-gha-vars.outputs.github_tag_version }}`
         
-        chmod +x $XVERSIONER_BIN
-        app_version=`$XVERSIONER_BIN update --version $github_tag_version -i $semver`
+        chmod +x $dexter_bin
+        app_version=`$dexter_bin update --version $github_tag_version -i $semver`
 
         echo "Semantic Versioning: $semver"
         echo "Application Version: $github_tag_version"
@@ -118,6 +118,4 @@ extract-gha-vars:
 ````
 ${{ needs.generate-version.outputs.app_version }}
 ````
-
-
 

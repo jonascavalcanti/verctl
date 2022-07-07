@@ -1,15 +1,15 @@
 # User Guide
 
-Starting with xversioner
+Starting with dexter
 
 ## CLI Options
-The xversioner has many CLI options that can be used to override its default behavior.
+The dexter has many CLI options that can be used to override its default behavior.
 ```
-xversioner --help
+dexter --help
 Manages version control of applications based on the `Semantica Version Specification` and `Commit Convention`
 
 Usage: 
-  xversioner [command] [flags]
+  dexter [command] [flags]
 
 Available Commands:
     get		get version based specifc file
@@ -30,48 +30,48 @@ Use " [command] --help" for more information about a command.
 *Semantic versioning*
 - Using filepath
 ````
-$ xversioner update -f ./app/app.properties -i patch
+$ dexter update -f ./app/app.properties -i patch
 ````
 - Using version
 ````
-$ xversioner update --version 1.0.0 -i patch
+$ dexter update --version 1.0.0 -i patch
 >> OUTPUT: 1.0.1
 ````
 
 *Date*
 - Using filepath
 ````
-$ xversioner update -f ./app/app.properties -i date
+$ dexter update -f ./app/app.properties -i date
 >> OUTPUT: 2022.05.30.1
 ````
 - Using version
 ````
-$ xversioner update --version 2022.05.30.0 -i date
+$ dexter update --version 2022.05.30.0 -i date
 >> OUTPUT: 2022.05.30.1
 ````
 
 *Release Candidate*
 - Using filepath
 ````
-$ xversioner update -f ./app/app.properties -i rc
-$ xversioner update -f ./app/app.properties -i rc:minor
+$ dexter update -f ./app/app.properties -i rc
+$ dexter update -f ./app/app.properties -i rc:minor
 ````
 - Using version
 ````
-$ xversioner update --version 1.0.0 -i rc
+$ dexter update --version 1.0.0 -i rc
 >> OUTPUT: 1.0.0-rc
-$ xversioner update --version 1.0.0 -i rc:minor
+$ dexter update --version 1.0.0 -i rc:minor
 >> OUTPUT: 1.1.0-rc
 ````
 
 *Staging*
 - Using filepath
 ````
-$ xversioner update -f ./app/app.properties -i staging
+$ dexter update -f ./app/app.properties -i staging
 ````
 - Using version
 ````
-$ xversioner update --version 1.0.0 -i staging
+$ dexter update --version 1.0.0 -i staging
 >> OUTPUT: 1.0.0-staging
 ````
 
@@ -81,5 +81,5 @@ $ xversioner update --version 1.0.0 -i staging
 
 - Using filepath
 ````
-$ xversioner get -f ./app/app.properties
+$ dexter get -f ./app/app.properties
 ````

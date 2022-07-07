@@ -1,7 +1,7 @@
 package help
 
 func Default() string {
-	defaultMsg := "xVersioner (CLI): xversioner controls application version\n" +
+	defaultMsg := "xversioner manages version control of applications based on the `Semantica Version Specification` and `Commit Convention`\n" +
 		"\n" +
 		"Find more information at:  \n" +
 		"\n" +
@@ -13,7 +13,7 @@ func Default() string {
 }
 
 func Update() string {
-	updateMsg := "xVersioner (CLI): xversioner controls application version\n" +
+	updateMsg := "xversioner manages version control of applications based on the `Semantica Version Specification` and `Commit Convention`\n" +
 		"update command: \n" +
 		"\n" +
 		"Examples:\n" +
@@ -31,7 +31,7 @@ func Update() string {
 }
 
 func Get() string {
-	getMsg := "xversioner (CLI): xversioner controls application version\n" +
+	getMsg := "xversioner manages version control of applications based on the `Semantica Version Specification` and `Commit Convention`\n" +
 		"get command: \n" +
 		"\n" +
 		"Examples:\n" +
