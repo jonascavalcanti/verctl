@@ -1,8 +1,23 @@
-# xversioner (CLI): xversioner controls application version
+# xVersioner tool (CLI)
 
-## Using tool
+Manages version control of applications based on the `Semantica Version Specification` and `Commit Convention`
 
-### Download dependencies
+Table of Contents
+=================
+<!-- toc -->
+- [Quick Start](#quick-start)
+    - [Download Dependencies](#download-dependencies)
+    - [Normal Build](#normal-build)
+    - [Linux OS Build](#linux-build)
+- [Increment Types](#increment-types)      
+- [User Guide](#user-guide)
+- [CI Examples Guide](#ci-examples)
+
+
+<!-- /toc -->
+## Quick Start
+
+### Download Dependencies
 ````
 $ go mod tidy
 ````
@@ -10,23 +25,23 @@ $ go mod tidy
 ````
 $ go build -v -o xversioner
 ````
-### Build to Linux OS
+### Linux Build
 ````
 $ env GOOS=linux GOARCH=amd64 go build -v -o xversioner
 ````
 
-### Get aplication version example
-````
-$ xversioner get filepath ./app/file_contain_app_version
-or 
+## Increment Types
 
-$ xversioner get -f ./app/file_contain_app_version
-````
+| Increment Type | Version Format | Example |
+| -------------- | -------------- | ------- |
+| Semantic Version  | `major.minor.patch` | 1.0.0 | 
+| date | `year.month.day.count` | 1979.05.11.0 |
+| release candidate | `rc` | 1.0.0-rc |
+| release candidate with semantic version| `rc:(major\|minor\|patch)` | 1.1.0-rc |
+| staging | `staging` | 1.0.0-staging | 
 
-### Update aplication version example
-````
-$ xversioner update filepath ./app/file_contain_app_version increment patch
-or
-$ xversioner update -f ./app/file_contain_app_version -i patch
+## User Guide
+See the [user guide](docs/user-guide.md) in the `/docs` directory.
 
-````
+## CI Examples
+See the [ci examples guide](docs/ci-examples-guide.md) in the `/docs` directory.
