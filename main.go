@@ -3,24 +3,17 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
-	"xversioner/help"
-	"xversioner/manipulator"
+	"github.com/jonascavalcantineto/versctl/help"
+	model "github.com/jonascavalcantineto/versctl/model"
 )
-
-type Options struct {
-	Type     string
-	Filepath string
-	Version  string
-}
 
 func main() {
 
-	if len(os.Args) < 2 || os.Args[1] == "--help" || os.Args[1] == "-h" || os.Args[1] == "help" {
+	if len(os.Args) < 2 || string.Contains(os.Args[1], "h") {
 		fmt.Println(help.Default())
 	}
 
-	options := new(Options)
+	options := new(model.Options)
 
 	for index, opt := range os.Args {
 
@@ -57,52 +50,15 @@ func main() {
 				fmt.Println(help.Update())
 				os.Exit(1)
 			} else {
-				options.update()
+				options.Update()
 			}
 		case "get":
 			if len(os.Args[index:]) <= 1 || os.Args[index+1] == "--help" || os.Args[index+1] == "help" {
 				fmt.Println(help.Get())
 				os.Exit(1)
 			} else {
-				options.get()
+				options.Get()
 			}
 		}
 	}
-
-}
-
-func (opts Options) update() {
-
-	oldVersionTmp := ""
-	if opts.Filepath != "" {
-		oldVersionTmp = manipulator.GetVersion(opts.Filepath)
-	} else if opts.Version != "" {
-		oldVersionTmp = opts.Version
-		if oldVersionTmp != "" {
-			if strings.Contains(oldVersionTmp, "v") {
-				oldVersionTmp = strings.ReplaceAll(oldVersionTmp, "v", "")
-			} else if strings.Contains(oldVersionTmp, "V") {
-				oldVersionTmp = strings.ReplaceAll(oldVersionTmp, "V", "")
-			}
-		}
-	} else {
-		fmt.Println(help.Default())
-		os.Exit(1)
-	}
-
-	oldVersion := "'" + oldVersionTmp + "'"
-	newVersion := manipulator.IncrementVersion(oldVersion, opts.Type)
-
-	if opts.Filepath != "" {
-		manipulator.WriteVersionOnFile(opts.Filepath, oldVersion, newVersion)
-		fmt.Println("Application Version:", oldVersion)
-		fmt.Println("New Version:", newVersion)
-	} else if opts.Version != "" {
-		fmt.Println(strings.ReplaceAll(newVersion, "'", ""))
-	}
-
-}
-
-func (opts Options) get() {
-	fmt.Println(manipulator.GetVersion(opts.Filepath))
 }

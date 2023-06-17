@@ -1,4 +1,4 @@
-package manipulator
+package handler
 
 import (
 	"bufio"

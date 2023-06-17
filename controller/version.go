@@ -1,4 +1,4 @@
-package manipulator
+package controller
 
 import (
 	"fmt"
@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	file "github.com/jonascavalcantineto/versctl/handler"
+	model "github.com/jonascavalcantineto/versctl/model"
 )
 
 //Read and return the content as string
@@ -17,14 +19,10 @@ func GetVersion(filepath string) string {
 	var v []string
 	var num_version string
 
-	for _, line := range ReadLinesInFile(filepath) {
+	for _, line := range file.ReadLinesInFile(filepath) {
 		if strings.Contains(line, "version") || strings.Contains(line, "VERSION") {
-			//fmt.Printf("Line Number = %v, line = %v\n", index, line)
-			//fmt.Printf("line = %v\n", line)
-
 			if count < 1 {
 				v = rgex.Split(line, -1)
-				//fmt.Println(v)
 				num_version = v[1]
 				num_version = strings.ReplaceAll(num_version, "\"", "")
 				num_version = strings.ReplaceAll(num_version, "'", "")
@@ -42,11 +40,7 @@ func GetVersion(filepath string) string {
 	return num_version
 }
 
-type SemVer struct {
-	Major int
-	Minor int
-	Patch int
-}
+
 
 func IncrementVersion(oldVersion, typeInc string) string {
 
@@ -80,7 +74,7 @@ func generateSemVer(oldVersion, typeInc string) string {
 	arr[2] = strings.ReplaceAll(arr[2], "-rc", "")
 	arr[2] = strings.ReplaceAll(arr[2], "-staging", "")
 
-	v := new(SemVer)
+	v := new(model.Semantic)
 
 	v.Major, _ = strconv.Atoi(arr[0])
 	v.Minor, _ = strconv.Atoi(arr[1])
@@ -191,7 +185,7 @@ func generateRCVer(oldVersion, semver string) string {
 func generateStagingVer(oldVersion string) string {
 	arr := strings.Split(strings.ReplaceAll(oldVersion, "'", ""), ".")
 
-	v := new(SemVer)
+	v := new(model.Semantic)
 
 	arr[2] = strings.ReplaceAll(arr[2], "-rc", "")
 	arr[2] = strings.ReplaceAll(arr[2], "-staging", "")
@@ -207,5 +201,5 @@ func generateStagingVer(oldVersion string) string {
 
 func WriteVersionOnFile(filepath, oldVersion, newVersion string) {
 
-	ReplaceInFile(filepath, oldVersion, newVersion)
+	file.ReplaceInFile(filepath, oldVersion, newVersion)
 }
