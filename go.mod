@@ -1,3 +1,3 @@
-module xversioner
+module github.com/jonascavalcantineto/versctl
 
-go 1.17
+go 1.20

@@ -1,4 +1,4 @@
-# xversioner Version Tool (CLI)
+# versctl
 
 <img src="./docs/imgs/xversioner-icon.png" width="300" height="300" >
 
