@@ -1,15 +1,15 @@
 # User Guide
 
-Starting with dexter
+Starting with versctl
 
 ## CLI Options
-The dexter has many CLI options that can be used to override its default behavior.
+The versctl has many CLI options that can be used to override its default behavior.
 ```
-dexter --help
+versctl --help
 Manages version control of applications based on the `Semantica Version Specification` and `Commit Convention`
 
 Usage: 
-  dexter [command] [flags]
+  versctl [command] [flags]
 
 Available Commands:
     get		get version based specifc file
@@ -30,48 +30,48 @@ Use " [command] --help" for more information about a command.
 *Semantic versioning*
 - Using filepath
 ````
-$ dexter update -f ./app/app.properties -i patch
+$ versctl update -f ./app/app.properties -i patch
 ````
 - Using version
 ````
-$ dexter update --version 1.0.0 -i patch
+$ versctl update --version 1.0.0 -i patch
 >> OUTPUT: 1.0.1
 ````
 
 *Date*
 - Using filepath
 ````
-$ dexter update -f ./app/app.properties -i date
+$ versctl update -f ./app/app.properties -i date
 >> OUTPUT: 2022.05.30.1
 ````
 - Using version
 ````
-$ dexter update --version 2022.05.30.0 -i date
+$ versctl update --version 2022.05.30.0 -i date
 >> OUTPUT: 2022.05.30.1
 ````
 
 *Release Candidate*
 - Using filepath
 ````
-$ dexter update -f ./app/app.properties -i rc
-$ dexter update -f ./app/app.properties -i rc:minor
+$ versctl update -f ./app/app.properties -i rc
+$ versctl update -f ./app/app.properties -i rc:minor
 ````
 - Using version
 ````
-$ dexter update --version 1.0.0 -i rc
+$ versctl update --version 1.0.0 -i rc
 >> OUTPUT: 1.0.0-rc
-$ dexter update --version 1.0.0 -i rc:minor
+$ versctl update --version 1.0.0 -i rc:minor
 >> OUTPUT: 1.1.0-rc
 ````
 
 *Staging*
 - Using filepath
 ````
-$ dexter update -f ./app/app.properties -i staging
+$ versctl update -f ./app/app.properties -i staging
 ````
 - Using version
 ````
-$ dexter update --version 1.0.0 -i staging
+$ versctl update --version 1.0.0 -i staging
 >> OUTPUT: 1.0.0-staging
 ````
 
@@ -81,5 +81,5 @@ $ dexter update --version 1.0.0 -i staging
 
 - Using filepath
 ````
-$ dexter get -f ./app/app.properties
+$ versctl get -f ./app/app.properties
 ````

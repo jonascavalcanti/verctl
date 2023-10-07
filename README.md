@@ -1,8 +1,8 @@
-# xversioner Version Tool (CLI)
+# versctl Version Tool (CLI)
 
-<img src="./docs/imgs/xversioner-icon.png" width="300" height="300" >
+<img src="./docs/imgs/icon.png" width="300" height="300" >
 
-xversioner Manages version control of applications based on the [Semantic Versioning Specification](https://semver.org/) and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+versctl Manages version control of applications based on the [Semantic Versioning Specification](https://semver.org/) and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
 Table of Contents
 =================
@@ -25,11 +25,11 @@ $ go mod tidy
 ````
 ### Normal Build
 ````
-$ go build -v -o xversioner
+$ go build -v -o versctl
 ````
 ### Linux Build
 ````
-$ env GOOS=linux GOARCH=amd64 go build -v -o xversioner
+$ env GOOS=linux GOARCH=amd64 go build -v -o versctl
 ````
 
 ## Increment Types

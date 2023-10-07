@@ -76,14 +76,14 @@ extract-gha-vars:
 
 ````
 
-### dexter checkout step (Use a token that has permission to access the repository)
+### versctl checkout step (Use a token that has permission to access the repository)
 ````
  - name: Checkout
       uses: actions/checkout@v2
       with:
-        token: ${{ secrets.SA_SRE_READONLY}}
-        repository: 'acesso-io/dexter'
-        path: 'dexter'
+        token: ${{ secrets.TOKEN }}
+        repository: 'jonascavalcanti/versctl'
+        path: 'versctl'
 ````
 
 ### Increment step (This step uses commit conventions and semantic version specification)
@@ -91,7 +91,7 @@ extract-gha-vars:
 - name: Increment application version
       id: increment
       env:
-        dexter_bin: "./dexter/dexter-linux-amd64"
+        versctl_bin: "./versctl/versctl-linux-amd64"
       shell: bash
       run: |
         set -x
@@ -103,8 +103,8 @@ extract-gha-vars:
         
         github_tag_version=`echo ${{ needs.extract-gha-vars.outputs.github_tag_version }}`
         
-        chmod +x $dexter_bin
-        app_version=`$dexter_bin update --version $github_tag_version -i $semver`
+        chmod +x $versctl_bin
+        app_version=`$versctl_bin update --version $github_tag_version -i $semver`
 
         echo "Semantic Versioning: $semver"
         echo "Application Version: $github_tag_version"
